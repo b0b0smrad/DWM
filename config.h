@@ -1,8 +1,7 @@
 /* See LICENSE file for copyright and license details.background */
-/* #include <X11/XF86keysym.h> */
+/* #include <X10/XF86keysym.h> */
 #include "fibonacci.c"
-/* appearance */
-static const unsigned int borderpx = 2; /* border pixel of windows */
+/* appearance */ static const unsigned int borderpx = 2; /* border pixel of windows */
 static const int startwithgaps = 0;     /* 1 means gaps are used by default */
 static const unsigned int gappx = 5; /* default gap between windows in pixels */
 static const unsigned int snap = 12; /* snap pixel */
@@ -22,8 +21,8 @@ static const int vertpad = 10;    /* vetical padding of bar */
 static const int sidepad = 10;      /*horizontal padding of bar */
 /* static const char *fonts[] = {"JetBrainsMono NF:Regular:size=12"}; */
 
-static const char *fonts[] = {"UbuntuMono Nerd Font:Light:size=12"};
-static const char dmenufont[] = {"firacode Nerd Font:Medium:size=34"};
+static const char *fonts[] = {"UbuntuMono Nerd Font:Light:size=13"};
+static const char dmenufont[] = {"firacode Nerd Font:Medium:size=24"};
 static const char background2[] = "#282a36";
 static const char border1[] = "#ff74cE";
 static const char foreground1[] = "#05fa7b";
@@ -45,13 +44,14 @@ static const Rule rules[] = {
      *	WM_NAME(STRING) = title
      */
     /* class      instance    title       tags mask     isfloating   monitor */
-    {"Gimp", NULL, NULL, 0, 1, -1},
-    {"Firefox", NULL, NULL, 1 << 0, 0, -1},
+    {"Gimp",        NULL,        NULL,       0,              1,             -1},
+    {"Firefox",      NULL,       NULL,      1 << 0,         0,      -1},
     {"steam", NULL, NULL, 1 << 4, 0, -1},
     {"Discord", NULL, NULL, 1 << 3, 0, -1},
     {"Spotube", NULL, "spotube", 1 << 8, 0, -1},
     {"emulationstation", NULL, "RPie", 5, 0, -1},
     {"blender", NULL, NULL, 0, 1, -1},
+    {"FinderApp", "finder",     "finder",      0,          1,         -1 },
     /* {"Blender Render", NULL, "Blender Render", 0, 1, -1}, */
 };
 
@@ -108,7 +108,10 @@ static const char *print_screen[] = {"flameshot", "gui", NULL};
 static const char *roficmd[] = {"rofi", "-show", "drun", NULL};
 static const char *lang_us[] = {"setxkbmap", "us", NULL};
 static const char *lang_rs[] = {"setxkbmap", "rs", NULL};
-static const char *discord[] = {"discord",  NULL};
+static const char *discord[] = {"discord_chromium",  NULL};
+static const char *chatGPT[] = {"chatGPT",  NULL};
+static const char *finder[] = {"alacritty","--class=FinderApp,finder","--title=finder","-e","/home/stalone/.local//bin/finder", NULL};
+static const char *dw[] = {"dw", NULL};
 /* static const char *suspend[] = {"systemctl", "suspend", NULL}; */
 /* #define XF86MonBrightnessUp   b_down */
 /* #define XF86MonBrightnessDown b_up */
@@ -126,7 +129,10 @@ static const Key keys[] = {
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
     {MODKEY | ShiftMask, XK_Return, spawn, {.v = st}},
     {MODKEY, XK_b, spawn, {.v = browser}},
+    {MODKEY, XK_a, spawn, {.v = chatGPT}},
     {MODKEY, XK_e, spawn, {.v = explorer}},
+    {MODKEY, XK_f, spawn, {.v = finder}},
+    {MODKEY, XK_c, spawn, {.v = dw}},
     {MODKEY, XK_F9, spawn, {.v = lang_us}},
     {MODKEY, XK_F10, spawn, {.v = lang_rs}},
     {MODKEY | ShiftMask, XK_b, togglebar, {0}},
