@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details.background */
-/* #include <X10/XF86keysym.h> */
+// #include <X11/XF86keysym.h> 
 #include "fibonacci.c"
-/* appearance */ static const unsigned int borderpx = 2; /* border pixel of windows */
+/* appearance */ static const unsigned int borderpx = 1; /* border pixel of windows */
 static const int startwithgaps = 0;     /* 1 means gaps are used by default */
 static const unsigned int gappx = 5; /* default gap between windows in pixels */
 static const unsigned int snap = 12; /* snap pixel */
@@ -11,14 +11,13 @@ static const unsigned int systraypinning =
 static const unsigned int systrayonleft =
     0; /* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 3; /* systray spacing */
-static const int systraypinningfailfirst =
-    1; /* 1: if pinning fails, display systray on the first monitor, False:
+static const int systraypinningfailfirst = 1; /* 1: if pinning fails, display systray on the first monitor, False:
           display systray on the last monitor*/
 static const int showsystray = 1; /* 0 means no systray */
 static const int showbar = 1;     /* 0 means no bar */
 static const int topbar = 1;      /* 0 means bottom bar */
-static const int vertpad = 10;    /* vetical padding of bar */
-static const int sidepad = 10;      /*horizontal padding of bar */
+static const int vertpad = 14;    /* vetical padding of bar */
+static const int sidepad = 12;      /*horizontal padding of bar */
 /* static const char *fonts[] = {"JetBrainsMono NF:Regular:size=12"}; */
 
 static const char *fonts[] = {"UbuntuMono Nerd Font:Light:size=13"};
@@ -44,14 +43,18 @@ static const Rule rules[] = {
      *	WM_NAME(STRING) = title
      */
     /* class      instance    title       tags mask     isfloating   monitor */
-    {"Gimp",        NULL,        NULL,       0,              1,             -1},
-    {"Firefox",      NULL,       NULL,      1 << 0,         0,      -1},
-    {"steam", NULL, NULL, 1 << 4, 0, -1},
-    {"Discord", NULL, NULL, 1 << 3, 0, -1},
-    {"Spotube", NULL, "spotube", 1 << 8, 0, -1},
-    {"emulationstation", NULL, "RPie", 5, 0, -1},
-    {"blender", NULL, NULL, 0, 1, -1},
-    {"FinderApp", "finder",     "finder",      0,          1,         -1 },
+    // {"Gimp",        NULL,        NULL,       0,              1,             -1},
+    {"firefox",      NULL,       NULL,      1 << 0, 0,         0,      -1},
+    {"steam", NULL, NULL, 1 << 4,0, 0, -1},
+    {"Discord", NULL, NULL, 1 << 3,0, 0, -1},
+    {"discord.com__app", NULL, NULL, 1 << 3,0, 0, -1},
+    {"Spotube", NULL, "spotube", 1 << 8, 0, 0, -1},
+    {"emulationstation", NULL, "RPie", 5,0, 0, -1},
+    // {"blender", NULL, NULL, 0, 1, -1},
+
+    {"Blender", NULL, "Blender Render", 0 , 1, 1, -1},
+    { "Blender", NULL, "Preferences", 0,1, 1, -1 },
+    {"FinderApp", "finder",     "finder",      0,1,          1,         -1 },
     /* {"Blender Render", NULL, "Blender Render", 0, 1, -1}, */
 };
 
@@ -104,12 +107,17 @@ static const char *brightness_up[] = {"brightnessctl", "s", "30+", NULL};
 static const char *brightness_down[] = {"brightnessctl", "s", "30-", NULL};
 static const char *audio_up[] = {"audio_up", NULL};
 static const char *audio_down[] = {"audio_down", NULL};
+static const char *audio_control[] = {"alacritty","-e", "wiremix", NULL};
+static const char *volume_knob_up[]   = { "/bin/sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && volindicator_dunst.sh", NULL };
+static const char *volume_knob_down[] = { "/bin/sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && volindicator_dunst.sh", NULL };
 static const char *print_screen[] = {"flameshot", "gui", NULL};
 static const char *roficmd[] = {"rofi", "-show", "drun", NULL};
 static const char *lang_us[] = {"setxkbmap", "us", NULL};
 static const char *lang_rs[] = {"setxkbmap", "rs", NULL};
 static const char *discord[] = {"discord_chromium",  NULL};
+static const char *vesktop[] = {"vesktop",  NULL};
 static const char *chatGPT[] = {"chatGPT",  NULL};
+static const char *fehbg[] = {"/home/stalone/.fehbg",  NULL};
 static const char *finder[] = {"alacritty","--class=FinderApp,finder","--title=finder","-e","/home/stalone/.local//bin/finder", NULL};
 static const char *dw[] = {"dw", NULL};
 /* static const char *suspend[] = {"systemctl", "suspend", NULL}; */
@@ -132,15 +140,21 @@ static const Key keys[] = {
     {MODKEY, XK_a, spawn, {.v = chatGPT}},
     {MODKEY, XK_e, spawn, {.v = explorer}},
     {MODKEY, XK_f, spawn, {.v = finder}},
+    {MODKEY, XK_o, spawn, {.v = audio_control}},
+    {MODKEY, XK_bracketleft, spawn, {.v = fehbg}},
     {MODKEY, XK_c, spawn, {.v = dw}},
     {MODKEY, XK_F9, spawn, {.v = lang_us}},
+    //vol down keycode
+    {0, 0x1008ff11, spawn, {.v = volume_knob_down}},
+    //vol up keycode
+    {0, 0x1008ff13, spawn, {.v = volume_knob_up}},
     {MODKEY, XK_F10, spawn, {.v = lang_rs}},
     {MODKEY | ShiftMask, XK_b, togglebar, {0}},
     // { MODKEY,                XK_j,      focusstack,     {.i = +1 } },
     // { MODKEY,                XK_k,      focusstack,     {.i = -1 } },
     STACKKEYS(MODKEY, focus) STACKKEYS(MODKEY | ShiftMask, push){
         MODKEY, XK_i, incnmaster, {.i = +1}},
-    {MODKEY, XK_d, spawn, {.v = discord}},
+    {MODKEY, XK_d, spawn, {.v = vesktop}},
     {MODKEY, XK_h, setmfact, {.f = -0.07}},
     {MODKEY, XK_l, setmfact, {.f = +0.07}},
     {MODKEY | ShiftMask, XK_Return, zoom, {0}},
