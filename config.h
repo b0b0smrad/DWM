@@ -107,6 +107,12 @@ static const char *brightness_up[] = {"brightnessctl", "s", "30+", NULL};
 static const char *brightness_down[] = {"brightnessctl", "s", "30-", NULL};
 static const char *audio_up[] = {"audio_up", NULL};
 static const char *audio_down[] = {"audio_down", NULL};
+static const char *spotify[] = {"alacritty",
+                                "-e",
+                                "env",
+                                "LD_PRELOAD=/usr/local/lib/spotify-adblock.so",
+                                "spotify-launcher",
+                                NULL};
 static const char *audio_control[] = {"alacritty","-e", "wiremix", NULL};
 static const char *volume_knob_up[]   = { "/bin/sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && volindicator_dunst.sh", NULL };
 static const char *volume_knob_down[] = { "/bin/sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && volindicator_dunst.sh", NULL };
@@ -138,6 +144,7 @@ static const Key keys[] = {
     {MODKEY | ShiftMask, XK_Return, spawn, {.v = st}},
     {MODKEY, XK_b, spawn, {.v = browser}},
     {MODKEY, XK_a, spawn, {.v = chatGPT}},
+    {MODKEY | ShiftMask, XK_s, spawn, {.v = spotify}},
     {MODKEY, XK_e, spawn, {.v = explorer}},
     {MODKEY, XK_f, spawn, {.v = finder}},
     {MODKEY, XK_o, spawn, {.v = audio_control}},
